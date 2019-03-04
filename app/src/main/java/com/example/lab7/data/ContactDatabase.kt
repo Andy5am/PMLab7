@@ -7,7 +7,7 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
 
-@Database(entities = [ContactDao::class],version = 1)
+@Database(entities = [Contact::class],version = 1)
 abstract class ContactDatabase: RoomDatabase() {
 
     abstract fun contactDao(): ContactDao
@@ -15,14 +15,14 @@ abstract class ContactDatabase: RoomDatabase() {
     companion object {
         private var instance: ContactDatabase? = null
 
-        fun getInstance(context: Context):ContactDatabase? {
+        fun getInstance(context: Context): ContactDatabase? {
             if (instance == null) {
-                synchronized(ContactDatabase::class){
+                synchronized(ContactDatabase::class) {
                     instance = Room.databaseBuilder(
                         context.applicationContext,
-                        ContactDatabase::class.java,"contact_database"
+                        ContactDatabase::class.java, "note_database"
                     )
-                        .fallbackToDestructiveMigration()
+                        .fallbackToDestructiveMigration() // when version increments, it migrates (deletes db and creates new) - else it crashes
                         .addCallback(roomCallback)
                         .build()
                 }
@@ -34,7 +34,7 @@ abstract class ContactDatabase: RoomDatabase() {
             instance = null
         }
 
-        private val roomCallback = object: RoomDatabase.Callback() {
+        private val roomCallback = object : RoomDatabase.Callback() {
             override fun onCreate(db: SupportSQLiteDatabase) {
                 super.onCreate(db)
                 PopulateDbAsyncTask(instance)

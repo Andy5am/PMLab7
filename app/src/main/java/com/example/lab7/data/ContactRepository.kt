@@ -28,16 +28,16 @@ class ContactRepository(application: Application) {
     }
 
     fun delete(contact: Contact) {
-        val deleteNoteAsyncTask = DeleteContactAsyncTask(contactDao).execute(contact)
+        val deleteContactAsyncTask = DeleteContactAsyncTask(contactDao).execute(contact)
     }
 
-    fun deleteAllNotes() {
-        val deleteAllNotesAsyncTask = DeleteAllContactAsyncTask(
+    fun deleteAllContacts() {
+        val deleteAllConstactAsyncTask = DeleteAllContactAsyncTask(
             contactDao
         ).execute()
     }
 
-    fun getAllNotes(): LiveData<List<Contact>> {
+    fun getAllContacts(): LiveData<List<Contact>> {
         return allContacts
     }
 
